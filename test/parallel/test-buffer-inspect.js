@@ -23,7 +23,21 @@ b.fill('12');
 s = buffer.SlowBuffer(2);
 s.fill('12');
 
-expected = '<Buffer 31 32>';
+expected = '<Buffer 31 32 ...>';
+
+assert.throws(
+    () => util.inspect(b),
+    /^RangeError: Index out of range$/
+  );
+assert.strictEqual(util.inspect(s), expected);
+
+b = Buffer.allocUnsafe(4);
+b.fill('1234');
+
+s = buffer.SlowBuffer(4);
+s.fill('1234');
+
+expected = '<Buffer 31 32 ... >';
 
 assert.strictEqual(util.inspect(b), expected);
 assert.strictEqual(util.inspect(s), expected);
